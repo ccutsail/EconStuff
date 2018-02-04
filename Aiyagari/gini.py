@@ -11,7 +11,6 @@ def ginicoefficient(population, value):
     print(len(value), len(population))
     population = np.asarray(population)
     value = np.asarray(value)
-
     population = np.insert(population, 0, 0, axis=0)
     value = np.insert(value, 0, 0, axis=0)
     dprod = np.multiply(population, value)
