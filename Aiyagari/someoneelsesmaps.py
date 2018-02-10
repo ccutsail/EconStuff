@@ -20,7 +20,7 @@ def draw_us_map():
 
  
     #Read county boundaries
-    shp_info = m.readshapefile('cb_2015_us_county_500k','counties',drawbounds=True)
+    m.readshapefile('cb_2015_us_county_500k','counties',drawbounds=True)
     
     return m
 
