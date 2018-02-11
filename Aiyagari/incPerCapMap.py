@@ -11,7 +11,6 @@ import pandas as pd
 import numpy as np
 import gini as g
 from mpl_toolkits.basemap import Basemap
-import someoneelsesmaps as sem
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
@@ -40,9 +39,8 @@ pdData = pdData.dropna(axis=0, how='any')
 county_color_dict = {}
 for index, row in pdData.iterrows():
     if row["INCPERCAPITA"] is not None and index > 0 and row["STATE"] == "42":
-        color = calculate_color(int(row["INCPERCAPITA"]),min(pdData["INCPERCAPITA"]),max(pdData["INCPERCAPITA"]),100)
+        color = calculate_color(int(row["INCPERCAPITA"]),min(pdData["INCPERCAPITA"]),max(pdData["INCPERCAPITA"]),1)
         county_color_dict[row["FIPS"]] = color
-        print(row["FIPS"])
 
 patches = dict(map(lambda color:(color,[]),county_color_dict.values()))
 
@@ -74,7 +72,10 @@ for info, shape in zip(m.counties_info, m.counties):
     except Exception as e:
         continue
 for color in patches:
-    htmlcolor = '#%02x%02x%02x' % (math.ceil((255-color)/2), 100, math.ceil(color/2))
+    if color > 1500:
+        htmlcolor = '#%02x%02x%02x' % (73, 33, math.ceil(color/6))
+    else:
+        htmlcolor = '#%02x%02x%02x' % (math.ceil(color/6), 33, 73)
     ax.add_collection(PatchCollection(patches[color],facecolor=htmlcolor , edgecolor='k', linewidths=1.0, zorder=2))
 
 plt.title('Income Per Capita in Pennsylvania')
