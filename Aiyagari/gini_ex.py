@@ -1,6 +1,5 @@
 ''' This is an example of the Gini function using Census data
-    currently troubleshooting the gini function --
-    not 100% sure its returning the right value
+    It pulls income and population for all US states, then restricts to 
 '''
 import json
 import urllib
@@ -13,6 +12,7 @@ with urllib.request.urlopen("https://api.census.gov/data/2016/acs/acsse?get=STAT
     DAT = json.load(url)
 
 
+
 pdData = pd.DataFrame(DAT)
 pdData.columns = pdData.iloc[0]
 pdData.reindex(pdData.index.drop(0))
@@ -22,8 +22,8 @@ pdData["INCPERCAPITA"] = pdData["K201901_001E"]/pdData["K200001_001E"]
 pdData = pdData[~pdData.astype(str).eq('None').any(1)]
 pdData["K200001_001E"] = pd.to_numeric(pdData["K200001_001E"],errors='coerce')
 pdData["K201901_001E"] = pd.to_numeric(pdData["K201901_001E"],errors='coerce')
-pdData["log_income"] = np.log(pdData["K201901_001E"])
+# pdData["log_income"] = np.log(pdData["K201901_001E"])
 pdData = pdData.dropna(axis=0,how='any')
+pdData_PA = pdData.loc[pdData["STATE"]=='42']
 
-
-print(g.ginicoefficient(pdData["K200001_001E"],pdData["log_income"]))
+print(g.ginicoefficient(pdData_PA["K200001_001E"],pdData_PA["K201901_001E"]))

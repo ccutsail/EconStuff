@@ -39,17 +39,18 @@ pdData = pdData.dropna(axis=0, how='any')
 county_color_dict = {}
 for index, row in pdData.iterrows():
     if row["INCPERCAPITA"] is not None and index > 0 and row["STATE"] == "42":
-        color = calculate_color(int(row["INCPERCAPITA"]),min(pdData["INCPERCAPITA"]),max(pdData["INCPERCAPITA"]),1)
+        color = calculate_color(int(row["INCPERCAPITA"]),min(pdData["INCPERCAPITA"]),max(pdData["INCPERCAPITA"]),1005)
         county_color_dict[row["FIPS"]] = color
+
 
 patches = dict(map(lambda color:(color,[]),county_color_dict.values()))
 
 ax = plt.subplot()
 
-lllon = -81
-urlon = -75
-lllat = 39
-urlat = 43
+lllon = -80.519851
+urlon = -74.689502
+lllat = 39.719799
+urlat = 42.516072
 
 centerlon = float(lllon + urlon) / 2.0
 centerlat = float(lllat + urlat) / 2.0
@@ -72,10 +73,7 @@ for info, shape in zip(m.counties_info, m.counties):
     except Exception as e:
         continue
 for color in patches:
-    if color > 1500:
-        htmlcolor = '#%02x%02x%02x' % (73, 33, math.ceil(color/6))
-    else:
-        htmlcolor = '#%02x%02x%02x' % (math.ceil(color/6), 33, 73)
+    htmlcolor = '#%02x%02x%02x' % (color, 165, 180)
     ax.add_collection(PatchCollection(patches[color],facecolor=htmlcolor , edgecolor='k', linewidths=1.0, zorder=2))
 
 plt.title('Income Per Capita in Pennsylvania')
