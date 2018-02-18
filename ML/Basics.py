@@ -17,4 +17,3 @@ careerLog = nba_py.player.PlayerGameLogs(201933)
 
 df = pd.read_json(careerLog.json)
 
-list(df.columns)
